@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# This script displays lines containing the word "bash" from the output of the `ps` command
+
+ps aux | grep "[b]ash"
