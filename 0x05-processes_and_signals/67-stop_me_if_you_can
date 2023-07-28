@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
 # Find the process ID (PID) of the "to_infinity_and_beyond.sh" script
 
-PID=$(pgrep -f "7-highlander")
-
-if [[ -n "$PID" ]]; then
-    # Kill the process using SIGTERM
-    kill -15 $PID
-else
-    echo "Process 7-highlander not running"
-fi
+pkill -SIGTERM 7-highlander
