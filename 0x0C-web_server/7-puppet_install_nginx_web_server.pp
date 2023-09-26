@@ -1,35 +1,27 @@
 # Install and configure nginx server using puppet
 
+exec { 'apt-get-update':
+  command => '/usr/bin/apt-get update',
+}
+
 package { 'nginx':
-  ensure => 'installed',
-  before => File['/var/www/html/index.html', '/var/www/html/404.html'],
+  ensure  => 'installed',
+  require => Exec['apt-get-update'],
 }
 
 file { '/var/www/html/index.html':
   ensure  => file,
   content => 'Hello World!',
+  require => Package['nginx'],
 }
 
-file { '/var/www/html/404.html':
-  ensure  => file,
-  content => 'Ceci n\'est pas une page',
-}
-
-file_line { 'nginx_redirect':
-  path  => '/etc/nginx/sites-enabled/default',
-  line  => 'rewrite ^\/redirect_me https:\/\/www.linkedin.com\/in\/anas-ribki permanent;',
-  match => '^server_name _;$',
-}
-
-file_line { 'nginx_404':
-  path  => '/etc/nginx/sites-enabled/default',
-  line  => 'error_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}',
-  match => '^listen 80 default_server;$',
+exec { 'redirect_me':
+  command  => 'sed -i "24i\	rewrite^\/redirect_me https:\/\/www.linkedin.com\/in\/anas-ribki permanent;"
+  /etc/nginx/sites-available/default',
+  provider => 'shell'
 }
 
 service { 'nginx':
-  ensure     => running,
-  enable     => true,
-  hasrestart => true,
-  subscribe  => [File['/var/www/html/index.html', '/var/www/html/404.html'], File_line['nginx_redirect', 'nginx_404']],
+  ensure  => running,
+  require => Package['nginx'],
 }
