@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Install nginx web server.
+
+sudo apt-get update
+
+sudo apt-get -y install nginx
+
+# Create a custom html file that contains 'Hello World!'
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Restart nginx
+sudo service nginx restart
