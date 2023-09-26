@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Script that check status and start Apache server
+sudo service apache2 status
+sudo service apache2 start
