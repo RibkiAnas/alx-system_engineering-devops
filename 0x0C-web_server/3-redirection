@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Configure nginx server so that /redirect_me is redirecting to another page.
+
+sudo apt-get update
+
+sudo apt-get -y install nginx
+
+# Create a custom html file that contains 'Hello World!'
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Define the string for replacement.
+replacement="server_name _;\n\tlocation \/redirect_me {\n\t\treturn 301 https:\/\/www.linkedin.com/in/anas-ribki;\n\t}"
+
+# Use sed to insert redirection config into the default file.
+sudo sed -i "s/server_name _;/$replacement/" /etc/nginx/sites-enabled/default
+
+# Restart nginx
+sudo service nginx restart
