@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Configure nginx server to have a custom
+# 404 page that contains 'Ceci n'est pas une page'.
+
+sudo apt-get update
+
+sudo apt-get -y install nginx
+
+# Create a custom html file that contains 'Hello World!'
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Define the string for replacement.
+replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.linkedin.com\/in\/anas-ribki permanent;"
+
+# Use sed to insert redirection config into the default file.
+sudo sed -i "s/server_name _;/$replacement/" /etc/nginx/sites-enabled/default
+
+# Create a custom error page
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
+# Define the string for replacement.
+replacement="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+
+# Use sed to insert redirection config into the default file.
+sudo sed -i "s/listen 80 default_server;/$replacement/" /etc/nginx/sites-enabled/default
+
+# Restart nginx
+sudo service nginx restart
