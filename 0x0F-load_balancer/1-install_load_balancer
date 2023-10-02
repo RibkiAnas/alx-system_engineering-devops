@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Install and configure HAproxy
+
+sudo apt-get update
+
+sudo apt-get -y install haproxy
+
+# Create a backup of the original configuration file
+sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
+
+# Write the new configuration file using a heredoc
+sudo tee /etc/haproxy/haproxy.cfg << EOF
+frontend nginx_frontend
+  # Frontend listen port - 80
+  bind *:80
+  # Set the default backend
+  default_backend nginx_backend
+backend nginx_backend
+  # Use roundrobin to balance traffic
+  balance roundrobin
+  # Define the backend servers
+  server 367976-web-01 52.72.79.60:80 check
+  server 367976-web-02 100.25.136.86:80 check
+EOF
+
+# Enable HAproxy to be managed via an init script
+sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
+
+# Restart HAproxy service
+sudo service haproxy restart
+
+# Print a success message
+echo "HAproxy is installed and configured successfully."
