@@ -3,3 +3,4 @@
 
 sudo rm /etc/nginx/sites-enabled/*
 sudo ln -s /etc/nginx/sites-available/* /etc/nginx/sites-enabled/
+service nginx restart
