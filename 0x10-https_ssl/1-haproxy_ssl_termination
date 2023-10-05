@@ -1,0 +1,11 @@
+frontend nginx_frontend
+  bind *:443 ssl crt /etc/haproxy/certs/www.yoursite.tech.pem
+  reqadd X-Forwarded-Proto:\ https
+  # Set the default backend
+  default_backend nginx_backend
+backend nginx_backend
+  # Use roundrobin to balance traffic
+  balance roundrobin
+  # Define the backend servers
+  server 367976-web-01 52.72.79.60:80 check
+  server 367976-web-02 100.25.136.86:80 check
