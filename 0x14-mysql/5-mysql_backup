@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# A script that generates a MySQL dump and creates a compressed archive out of it
+# Usage: ./5-mysql_backup mydummypassword
+
+# Create a MySQL dump of all databases using root user and password from argument
+mysqldump --all-databases -u root -p"$1" > backup.sql
+
+# Compress the dump file and name the archive as day-month-year.tar.gz
+gzip -c backup.sql | cat > "$(date +%d-%m-%Y)".tar.gz
