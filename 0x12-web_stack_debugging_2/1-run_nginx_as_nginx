@@ -6,7 +6,7 @@
 service nginx stop
 
 # Edit the Nginx config file to change the user and port
-sed -i 's/user www-data/user nginx/' /etc/nginx/nginx.conf
+sed -i 's/#user www-data/user nginx/' /etc/nginx/nginx.conf
 sed -i 's/listen 80 default_server/listen 8080 default_server/' /etc/nginx/sites-enabled/default
 
 # Start Nginx service
