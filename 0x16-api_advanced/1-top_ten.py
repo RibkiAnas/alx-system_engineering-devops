@@ -14,15 +14,14 @@ def top_ten(subreddit):
             "User-Agent": "Mozilla/5.0 (Linux; Android 6.0"
             }
     url = "https://www.reddit.com/r/" + subreddit + "/hot.json"
-    params = {"limit": 10}
 
-    res = requests.get(url, headers=headers, params=params)
+    res = requests.get(url, headers=headers)
 
     if res.status_code == 200:
         data = res.json()
         posts = data["data"]["children"]
 
-        for i in posts:
+        for i in range(10):
             title = posts[i]["data"]["title"]
             print(title)
     else:
