@@ -10,7 +10,7 @@ def top_ten(subreddit):
     headers = {
             "User-Agent": "Mozilla/5.0 (Linux; Android 6.0"
             }
-    url = "https://www.reddit.com/r/" + subreddit + "/about.json"
+    url = "https://www.reddit.com/r/" + subreddit + "/hot.json"
 
     res = requests.get(url, headers=headers)
 
